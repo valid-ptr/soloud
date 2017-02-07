@@ -157,12 +157,14 @@ namespace SoLoud
 		int bitspersample = aReader->read16();
 
 		if (audioformat != 1 ||
-			subchunk1size != 16 ||
 			(bitspersample != 8 && bitspersample != 16))
 		{
 			return FILE_LOAD_FAILED;
 		}
-		
+
+		if (subchunk1size != 16)
+			aReader->seek(aReader->pos() + subchunk1size - 16);
+
 		chunk = aReader->read32();
 		
 		if (chunk == MAKEDWORD('L','I','S','T'))

@@ -336,12 +336,14 @@ namespace SoLoud
 		int bitspersample = fp->read16();
 
 		if (audioformat != 1 ||
-			subchunk1size != 16 ||
 			(bitspersample != 8 && bitspersample != 16))
 		{
 			return FILE_LOAD_FAILED;
 		}
-		
+
+		if (subchunk1size != 16)
+			fp->seek(fp->pos() + subchunk1size - 16);
+
 		chunk = fp->read32();
 		
 		if (chunk == MAKEDWORD('L','I','S','T'))
