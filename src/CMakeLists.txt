@@ -25,12 +25,16 @@ set (TARGET_HEADERS
 	../include/soloud_lofifilter.h
 	../include/soloud_monotone.h
 	../include/soloud_openmpt.h
+	../include/soloud_queue.h
+	../include/soloud_robotizefilter.h
 	../include/soloud_sfxr.h
 	../include/soloud_speech.h
 	../include/soloud_tedsid.h
 	../include/soloud_thread.h
 	../include/soloud_vic.h
+	../include/soloud_vizsn.h
 	../include/soloud_wav.h
+	../include/soloud_waveshaperfilter.h
 	../include/soloud_wavstream.h
 )
 
@@ -53,6 +57,7 @@ set (CORE_SOURCES
 	core/soloud_fft_lut.cpp
 	core/soloud_file.cpp
 	core/soloud_filter.cpp
+	core/soloud_queue.cpp
 	core/soloud_thread.cpp
 )
 
@@ -72,6 +77,7 @@ set (AUDIOSOURCES_SOURCES
 	audiosource/tedsid/soloud_tedsid.cpp
 	audiosource/tedsid/ted.cpp
 	audiosource/vic/soloud_vic.cpp
+	audiosource/vizsn/soloud_vizsn.cpp
 	audiosource/wav/soloud_wav.cpp
 	audiosource/wav/soloud_wavstream.cpp
 	audiosource/wav/stb_vorbis.c
@@ -141,6 +147,33 @@ if (SOLOUD_BACKEND_OPENSLES)
 	)
 endif()
 
+
+if (SOLOUD_BACKEND_XAUDIO2)
+	add_definitions (-DWITH_XAUDIO2)
+
+	set (BACKENDS_SOURCES
+		${BACKENDS_SOURCES}
+		backend/xaudio2/soloud_xaudio2.cpp
+	)
+endif()
+
+if (SOLOUD_BACKEND_WINMM)
+	add_definitions (-DWITH_WINMM)
+
+	set (BACKENDS_SOURCES
+		${BACKENDS_SOURCES}
+		backend/winmm/soloud_winmm.cpp
+	)
+endif()
+
+if (SOLOUD_BACKEND_WASAPI)
+	add_definitions (-DWITH_WASAPI)
+
+	set (BACKENDS_SOURCES
+		${BACKENDS_SOURCES}
+		backend/wasapi/soloud_wasapi.cpp
+	)
+endif()
 
 # Filters
 set (FILTERS_SOURCES
