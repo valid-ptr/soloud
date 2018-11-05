@@ -178,7 +178,8 @@ SIDsound::SIDsound(unsigned int model, unsigned int chnlDisableMask) : enableDig
 		voice[i].modulatesThis = &voice[(i+1)%3]; // next voice
 		voice[i].disabled = !!((chnlDisableMask >> i) & 1);
 	}
-
+	
+	extIn = 0;
 	filterCutoff = 0;
 	setModel(model);
 	setFrequency(0);
@@ -519,7 +520,8 @@ inline int SIDsound::doEnvelopeGenerator(unsigned int cycles, SIDVoice &v)
 
 				case EG_DECAY:
 					if (v.envCurrLevel != v.envSustainLevel) {
-						--v.envCurrLevel &= 0xFF;
+						v.envCurrLevel--;
+						v.envCurrLevel &= 0xFF;
 						if (!v.envCurrLevel)
 							v.egState = EG_FROZEN;
 					}
